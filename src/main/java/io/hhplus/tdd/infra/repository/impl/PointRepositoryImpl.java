@@ -1,25 +1,25 @@
-package io.hhplus.tdd.infra.repository;
+package io.hhplus.tdd.infra.repository.impl;
 
 import io.hhplus.tdd.domain.point.UserPoint;
 import io.hhplus.tdd.infra.database.UserPointTable;
+import io.hhplus.tdd.infra.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class UserPointRepositoryImpl implements UserPointRepository {
+public class PointRepositoryImpl implements PointRepository {
 
     private final UserPointTable userPointTable;
 
     @Override
-    public UserPoint save(UserPoint userPoint) {
-        System.out.println("userPoint.id() = " + userPoint.id());
-        System.out.println("userPoint = " + userPoint.point());
-        return userPointTable.insertOrUpdate(userPoint.id(), userPoint.point());
+    public UserPoint save(long id, long point) {
+        return userPointTable.insertOrUpdate(id, point);
     }
 
     @Override
     public UserPoint findById(Long id) {
+        System.out.println("id = " + id);
         return userPointTable.selectById(id);
     }
 }

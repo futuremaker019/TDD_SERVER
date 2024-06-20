@@ -2,11 +2,9 @@ package io.hhplus.tdd.infra.repository;
 
 import io.hhplus.tdd.domain.point.UserPoint;
 
-import java.util.Optional;
+public interface PointRepository {
 
-public interface UserPointRepository {
-
-    UserPoint save(UserPoint userPoint);
+    UserPoint save(long id, long point);
 
     UserPoint findById(Long id);
 

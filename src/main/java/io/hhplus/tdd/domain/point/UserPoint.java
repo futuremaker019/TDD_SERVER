@@ -17,8 +17,4 @@ public record UserPoint(
     public static UserPoint of(long id, long point) {
         return new UserPoint(id, point, 0L);
     }
-
-    public static UserPoint of(long id) {
-        return new UserPoint(id, 0L, 0L);
-    }
 }
