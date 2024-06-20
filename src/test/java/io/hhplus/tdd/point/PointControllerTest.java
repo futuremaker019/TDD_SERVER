@@ -1,7 +1,7 @@
 package io.hhplus.tdd.point;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.hhplus.tdd.application.UserPointService;
+import io.hhplus.tdd.application.PointService;
 import io.hhplus.tdd.domain.point.UserPoint;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -36,7 +36,7 @@ class PointControllerTest {
     @Autowired private MockMvc mockMvc;
     @Autowired private ObjectMapper objectMapper;
 
-    @MockBean private UserPointService userPointService;
+    @MockBean private PointService pointService;
 
     @Test
     void givenId_whenRequestingUserPoint_thenReturnUserPoint() throws Exception {
@@ -59,7 +59,7 @@ class PointControllerTest {
         long id = 1L;
 
         // when
-        doThrow(new Exception()).when(userPointService).getUserPoint(id);
+        doThrow(new Exception()).when(pointService).getPointById(id);
         mockMvc.perform(get("/point/%d".formatted(id)))
                 .andDo(print())
                 .andExpect(status().is5xxServerError());
