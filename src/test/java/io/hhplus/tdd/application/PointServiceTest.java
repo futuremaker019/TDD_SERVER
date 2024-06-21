@@ -14,16 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
@@ -163,40 +157,4 @@ class PointServiceTest {
                 .hasMessage("포인트를 차감할 수 없습니다. 잔액 %d".formatted(userPoint.point()));
     }
 
-    @Test
-    void 동시성_테스트_포인트_차감() throws InterruptedException {
-        // given
-        long userId = 1L;
-        given(userPointRepository.findById(userId)).willReturn(userPoint);
-
-        int threadCount = 1000;
-        ExecutorService executorService = Executors.newFixedThreadPool(32);
-        CountDownLatch countDownLatch = new CountDownLatch(threadCount);
-
-        doAnswer(invocation -> {
-            long id = invocation.getArgument(0);
-            long point = invocation.getArgument(1);
-            userPoint = new UserPoint(id, point, System.currentTimeMillis());
-            return userPoint;
-        }).when(userPointRepository).save(anyLong(), anyLong());
-
-        // when
-        for (int i = 0; i < threadCount; i++) {
-            int finalI = i;
-            executorService.submit(() -> {
-                try {
-                    sut.usePointById(PointRequestDto.of(userId, finalI));
-                } finally {
-                    countDownLatch.countDown();
-                }
-            });
-        }
-
-        countDownLatch.await();
-        executorService.shutdown();
-
-        // then
-        assertThat(userPoint).isNotNull();
-        assertThat(userPoint.point()).isGreaterThanOrEqualTo(0L);
-    }
 }

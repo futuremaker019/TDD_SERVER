@@ -7,12 +7,15 @@ import io.hhplus.tdd.domain.point.TransactionType;
 import io.hhplus.tdd.domain.point.UserPoint;
 import io.hhplus.tdd.infra.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PointService {
 
+    private static final Logger log = LoggerFactory.getLogger(PointService.class);
     public final PointRepository pointRepository;
     public final PointHistoryService pointHistoryService;
 
@@ -29,7 +32,7 @@ public class PointService {
      *      - 포인트 저장
      *      - pointHistory 에 저장
      */
-    public synchronized PointResponseDto chargePointById(PointRequestDto requestDto) {
+    public PointResponseDto chargePointById(PointRequestDto requestDto) {
         UserPoint userPoint = pointRepository.findById(requestDto.id());
         long resultPoint = userPoint.point() + requestDto.point();
         if (resultPoint > 50000) {
@@ -49,7 +52,7 @@ public class PointService {
      *      - 포인트 저장
      *      - pointHistory에 저장
      */
-    public synchronized PointResponseDto usePointById(PointRequestDto requestDto) {
+    public PointResponseDto usePointById(PointRequestDto requestDto) {
         UserPoint userPoint = pointRepository.findById(requestDto.id());
         long resultPoint = userPoint.point() - requestDto.point();
         if (resultPoint < 0) {
