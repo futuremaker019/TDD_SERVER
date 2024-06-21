@@ -19,7 +19,6 @@ public class PointRepositoryImpl implements PointRepository {
 
     @Override
     public UserPoint findById(Long id) {
-        System.out.println("id = " + id);
         return userPointTable.selectById(id);
     }
 }
