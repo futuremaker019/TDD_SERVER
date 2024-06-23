@@ -1,8 +1,8 @@
 package io.hhplus.tdd.dummy;
 
-import io.hhplus.tdd.point.PointHistory;
-import io.hhplus.tdd.point.TransactionType;
-import io.hhplus.tdd.point.UserPoint;
+import io.hhplus.tdd.domain.point.PointHistory;
+import io.hhplus.tdd.domain.point.TransactionType;
+import io.hhplus.tdd.domain.point.UserPoint;
 
 import java.util.List;
 
